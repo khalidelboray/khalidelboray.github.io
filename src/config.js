@@ -8,11 +8,6 @@ export const config = {
   // Your Github Repo Name Where You Have your issues as Blog
   githubRepo: "khalidelboray.github.io",
 
-  // Set it to true if you have a Github app to add to this project
-  // and fill the client ID & secret
-  enableOAuth: true,
-  OAuthClientID: 'Iv1.aec735d4e1cc4e9e',
-  OAuthSecret: '81feb450888ebfee9bce6fdbc621d4a3188a57ad',
 
   // Your Personal Blog Title
   title : "Khalid Elborai" ,
