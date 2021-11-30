@@ -46,6 +46,10 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "README.md"}
   - {file: "archive.html", title: "Archive", sidebaricon: "archive.png"}
 
+external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
+  - {title: Mail, icon: envelope, url: "mailto:elboraikhalid@gmail.com"}
+  - {title: Github, icon: github, url: "https://github.com/khalidelboray"}
+  - {title: Subscribe, icon: rss, url: "/feed.xml"}
 # exclude:
 #   - .sass-cache/
 #   - .jekyll-cache/
