@@ -39,6 +39,10 @@ show_sidebar: true        # show a sidebar instead of the usual header
 plugins:
   - jekyll-feed
   - jekyll-last-modified-at
+  - jekyll-mentions
+
+jekyll-mentions:
+  base_url: https://twitter.com
 
 last-modified-at:
     date-format: '%d-%b-%y'

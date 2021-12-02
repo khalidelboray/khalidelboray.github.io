@@ -6,8 +6,10 @@ layout: default
   {% include meta.html post=page %}
   {{ content }}
   <h2>Enjoy Reading This Article?</h2>
-  <p>Here are some more articles with similar tags:</p>
+  <ul>
 
+  <li>
+  <p>Here are some more articles with similar tags:</p>
   {% assign maxRelated = 5 %}
   {% assign minCommonTags = 1 %}
   {% assign maxRelatedCounter = 0 %}
@@ -36,11 +38,23 @@ layout: default
     {% endif %}
     {% endfor %}
   </ul>
-  <p>Here are some more articles with similar content:</p>
-  {% for post in site.related_post %}
-    <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
-  {% endfor %}
+</li>
 
+  {% assign psize = site.related_posts | size %}
+  {% if psize > 0 %}
+  <li>
+  <p>Here are some more articles with similar content:</p>
+  
+  <ul>
+  {% for post in site.related_posts %}
+    {% if post.url != page.url %}
+      <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+    {% endif %}
+  {% endfor %}
+  </ul>
+</li>
+  {% endif %}
+  </ul>
   <!-- {% if page.comments != false and site.comments.isso or site.comments.disqus %}
   <hr>
   {% if site.comments.isso_domain %}<div id="isso-thread"></div>{% endif %}
