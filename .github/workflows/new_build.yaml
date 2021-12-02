@@ -39,8 +39,9 @@ jobs:
 
       # Print where we are
       - name: Print where we are
+        working-directory: repo
         run: pwd
-        
+
       # Install bundler
       - name: Install bundler
         run: gem install bundler
@@ -49,18 +50,25 @@ jobs:
       - name: Install gems
         working-directory: repo
         run: bundle install --jobs=4 --retry=3 
-
+      # Add a blank .nojekyll file to the repo to stop GitHub from generating a 404 for /.nojekyll
+      - name: Add a blank .nojekyll file to the repo to stop GitHub from generating a 404 for /.nojekyll
+        working-directory: repo
+        run: mkdir _site && touch _site/.nojekyll
+        
       # Build the site
       - name: Build the site
+        working-directory: repo
         run: bundle exec jekyll build -V
 
       # Create a new folder with the contents of the _site folder for the gh-pages branch
       - name: Create a new folder with the contents of the _site folder for the gh-pages branch
+        working-directory: ../gh-pages
         run: mkdir -p ../gh-pages
         
       
       # Copy the contents of the _site folder to the gh-pages folder
       - name: Copy the contents of the _site folder to the gh-pages folder
+        working-directory: ../gh-pages
         run: cp -r _site/* ../gh-pages
 
       # set the gh-pages folder to be a git repo
@@ -86,18 +94,22 @@ jobs:
 
       # Change directory to the gh-pages folder
       - name: Change directory to the gh-pages folder
+        working-directory: repo
         run: cd ../gh-pages
       
       # Add all files to the gh-pages branch
       - name: Add all files to the gh-pages branch
+        working-directory: repo
         run: git add .
 
       # Commit the changes
       - name: Commit the changes
+        working-directory: repo
         run: git commit -m "Deployed to GitHub Pages"
 
       # Push the changes to the gh-pages branch
       - name: Push the changes to the gh-pages branch
+        working-directory: repo
         run: git push origin gh-pages
 
         
