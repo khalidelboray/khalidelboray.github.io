@@ -21,8 +21,39 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
       - name: Build & Deploy to GitHub Pages
-        uses: joshlarsen/jekyll4-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
-          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+        run: bundle exec jekyll build && bundle exec jekyll deploy
+      - name: GitHub Pages Push
+        uses: actions/github-pages-push@v1
+        with:
+          path: .
+          message: "Deployed by ${{ github.actor }}"
+          branch: master
+          push-mode: force
+          commit-message: "Deployed by ${{ github.actor }}"
+          commit-all: true
+          delete-branch-after-deploy: true
+          delete-branch-on-failure: true
+          delete-branch-on-success: true
+          delete-branch-on-error: true
+          delete-branch-on-cancel: true
+          delete-branch-on-timeout: true
+          delete-branch-on-expire: true
+          delete-branch-on-abandon: true
+          delete-branch-on-delete: true
+          delete-branch-on-merge: true
+          delete-branch-on-rebase: true
+          delete-branch-on-squash: true
+          delete-branch-on-revert: true
+          delete-branch-on-reset: true
+          delete-branch-on-rollback: true
+          delete-branch-on-force: true
+          delete-branch-on-force-delete: true
+          delete-branch-on-force-merge: true
+          delete-branch-on-force-rebase: true
+          delete-branch-on-force-squash: true
+          delete-branch-on-force-revert: true
+          delete-branch-on-force-reset: true
+          delete-branch-on-force-rollback: true
+          delete-branch-on-force-cancel: true
+          delete-branch-on-force-expire: true
+          delete-branch-on-force-abandon: true
