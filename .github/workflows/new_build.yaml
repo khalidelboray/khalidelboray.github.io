@@ -31,11 +31,7 @@ jobs:
 
       # Clone the repo to a directory called repo
       - name: Clone the repo
-        run: git clone 
-        with:
-          url: ${{ github.repository.html_url }}
-          ref: ${{ github.ref }}
-          dir: repo
+        run: git clone ${{ github.repository.html_url }} repo
 
       # Change directory to the repo directory
       - name: Change directory to the repo directory
