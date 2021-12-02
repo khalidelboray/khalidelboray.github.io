@@ -41,25 +41,36 @@ jobs:
         run: ls -la _site
       
             # Commit changes
-      - name: 💾 Commit changes
+      # Create a new folder with the contents of _site directory
+      - name: 📂 Create a new folder with the contents of _site directory
+        run: mkdir -p /tmp/jekyll-deploy
         env:
-          GIT_AUTHOR_NAME: ${{ github.actor }}
-          GIT_AUTHOR_EMAIL: ${{ github.actor_email }}
-          GIT_COMMITTER_NAME: ${{ github.actor }}
-          GIT_COMMITTER_EMAIL: ${{ github.actor_email }}
-        run: git add _site/* && git commit -m "Deployed to ${{ github.ref }} by {{github.author}}"
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
+      
+      # Copy the contents of _site to the new folder
+      - name: 📂 Copy the contents of _site to the new folder
+        run: cp -r _site/* /tmp/jekyll-deploy
 
-      # Create new repository in a new folder
-      - name: 📁 Create new repository in a new folder
-        run: git clone --depth 1 --branch master
+      # Add remote origin
+      - name: 📂 Add remote origin
+        run: git remote add origin ${{ github.repository }}
+
+      # Add files to the staging area
+      - name: 📂 Add files to the staging area
+        run: git add -A
         env:
-          GIT_AUTHOR_NAME: ${{ github.actor }}
-          GIT_AUTHOR_EMAIL: ${{ github.actor_email }}
-          GIT_COMMITTER_NAME: ${{ github.actor }}
-          GIT_COMMITTER_EMAIL: ${{ github.actor_email }}
-        with:
-          GIT_URL: ${{ github.repository }}
-          GIT_CLONE_PATH: _site
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
+      
+      - name: 📂 Commit changes
+        run: git commit -m "Deployed with Jekyll"
+        env:
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
+      
+      - name: 📂 Push changes
+        run: git push origin gh-pages
+        env:
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
+            
       
       # Push to remote
       - name: 📡 Push to remote
