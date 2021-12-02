@@ -59,28 +59,24 @@ jobs:
 
       # set the gh-pages folder to be a git repo
       - name: set the gh-pages folder to be a git repo
+        working-directory: ../gh-pages
         run: git init
-        with:
-          dir: ../gh-pages
       
       # Add remore origin to gh-pages directory
       - name: Add remore origin to gh-pages directory
+        working-directory: ../gh-pages
         run: git remote add origin ${{ github.repository.html_url }}
-        with:
-          dir: ../gh-pages
       
 
        # Remove everything from the gh-pages branch
       - name: Remove everything from the gh-pages branch
+        working-directory: ../gh-pages
         run: git branch -D gh-pages
-        with:
-          dir: ../gh-pages
 
       # Checkout the gh-pages branch
       - name: Checkout the gh-pages branch
+        working-directory: ../gh-pages
         run: git checkout -b gh-pages
-        with:
-          dir: ../gh-pages
 
       # Change directory to the gh-pages folder
       - name: Change directory to the gh-pages folder
