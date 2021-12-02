@@ -34,7 +34,7 @@ jobs:
         run: bundle install --jobs=4 --retry=3 
       # Build jekyll
       - name: 🏗 Build Jekyll
-        run: bundle exec jekyll build 
+        run: bundle exec jekyll build -V
       
       # View _site folder contents
       - name: 📂 View _site folder contents
@@ -50,6 +50,10 @@ jobs:
       # Copy the contents of _site to the new folder
       - name: 📂 Copy the contents of _site to the new folder
         run: cp -r _site/* /tmp/jekyll-deploy
+
+      # Cd into the new folder
+      - name: 📂 Cd into the new folder
+        run: cd /tmp/jekyll-deploy
 
       # Add remote origin
       - name: 📂 Add remote origin
@@ -72,14 +76,6 @@ jobs:
           GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
             
       
-      # Push to remote
-      - name: 📡 Push to remote
-        run: git push origin gh-pages
-        env:
-          GIT_AUTHOR_NAME: ${{ github.actor }}
-          GIT_AUTHOR_EMAIL: ${{ github.actor_email }}
-          GIT_COMMITTER_NAME: ${{ github.actor }}
-          GIT_COMMITTER_EMAIL: ${{ github.actor_email }}
 
 
       # - name: 💾 GitHub Pages Push
