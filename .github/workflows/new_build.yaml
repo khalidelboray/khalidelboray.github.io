@@ -12,8 +12,8 @@ jobs:
       - name: Install libgsl-dev
         run: sudo apt-get install -y libgsl-dev
       
-      - name: 📂 GitHub Checkout
-        uses: actions/checkout@v1
+      # - name: 📂 GitHub Checkout
+      #   uses: actions/checkout@v2
 
       - name: 💎 setup ruby
         uses: ruby/setup-ruby@v1
@@ -21,12 +21,12 @@ jobs:
           ruby-version: 2.7 # can change this to 2.7 or whatever version you prefer
       
       - name: Bundler Cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+            ${{ runner.os }}-gems-
 
 
       # Install gems
@@ -53,11 +53,13 @@ jobs:
 
       # Cd into the new folder
       - name: 📂 Cd into the new folder
-        run: cd /tmp/jekyll-deploy
+        run: cd /tmp/jekyll-deploy && pwd && git remote -v
 
       # Add remote origin
       - name: 📂 Add remote origin
         run: git remote add origin ${{ github.repository }}
+        env:
+          GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
 
       # Add files to the staging area
       - name: 📂 Add files to the staging area
