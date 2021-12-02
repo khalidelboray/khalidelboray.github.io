@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+<article>
+
+<header>
+
+  <h1><a href="{{ include.post.url | relative_url }}">Articles tagged with "{{ page.tag-name }}"</a></h1>
+
+</header>
+  <ul style='padding-top: 16px;'>
+  
+  {% for post in site.posts %}
+    {% if post.tags contains page.tag-name %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a>, published {{ post.date | date: "%Y-%m-%d" }}</li>
+    {% endif %}
+  {% endfor %}
+  
+  </ul>
+</article>

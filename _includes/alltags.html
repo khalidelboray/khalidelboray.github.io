@@ -1,0 +1,10 @@
+<article>
+    <header><h1>{{ include.title | default: page.title }}</h1></header>
+    <ul class="tags">
+      {% for tag in site.site-tags %}
+      <li>
+        <a href="{{ site.baseurl }}/tags/{{ tag }}">{{ tag }}</a></li>
+      </li>
+      {% endfor %}
+    </ul>
+</article>

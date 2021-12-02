@@ -5,6 +5,10 @@
     <li>
       <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <!-- <span class="disqus-comment-count" data-disqus-identifier='{{ page.url | absolute_url }}'> -->
+        <a href="{{ post.url | relative_url }}#disqus_thread">
+          <span class="disqus-comment-count-inner"></span>
+        </a>  
     </li>
     {% endfor %}
   </ul>

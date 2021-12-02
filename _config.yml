@@ -28,23 +28,24 @@ twitter_username: khalidelborai
 github_username:  khalidelboray
 # remote_theme: niklasbuschmann/contrast@v2.11
 
-
+site-tags: [ai,nnfs,raku,neural_networks]
 # Layout
 
 show_excerpts: true        # show article excerpts on the home page
 show_frame: true           # adds a gray frame to the site
-show_sidebar: false        # show a sidebar instead of the usual header
+show_sidebar: true        # show a sidebar instead of the usual header
 # Build settings
 # theme: minima
 plugins:
-  - jekyll-remote-theme
   - jekyll-feed
 
+comments:
+  disqus_shortname: "blog-xjqlc0gxzf"
 
 navigation:                # accepts {file, title, url, icon, sidebaricon}
-  - {file: "index.html"}
-  - {file: "README.md"}
-  - {file: "archive.html", title: "Archive", sidebaricon: "archive.png"}
+  - {file: "index.html", title: "Home", url: "/", icon: "home", sidebaricon: "home"}
+  - {file: "archive.html", title: "Archive", url: "/archive", icon: "archive",sidebaricon: "archive"}
+  - {file: "alltags.html", title: "Tags", url: "/alltags", icon: "tag",sidebaricon: "tag"}
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
   - {title: Mail, icon: envelope, url: "mailto:elboraikhalid@gmail.com"}

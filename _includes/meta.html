@@ -1,5 +1,23 @@
 <header>
-  <h1><a href="{{ include.post.url | relative_url }}">{{ include.post.title }}</a></h1>
+    <h1><a href="{{ include.post.url | relative_url }}">{{ include.post.title }}</a></h1>
+    {% if page.layout == 'post' %}
+      <!-- <span class="disqus-comment-count" data-disqus-identifier='{{ page.url | absolute_url }}'> -->
+        <a href="{{ page.url | absolute_url }}#disqus_thread">
+          <span class="disqus-comment-count-inner"></span>
+        </a>  
+    {% endif %}
+    {% if page.layout == 'default' %}
+      <span class="disqus-comment-count" data-disqus-identifier='{{ include.post.url | relative_url }}'>
+        <a href="{{ include.post.url | relative_url }}#disqus_thread">
+          <span class="disqus-comment-count-inner"></span>
+        </a>  
+      </span>
+    {% endif %}
+  <ul class="tags">
+    {% for tag in include.post.tags %}
+      <li><a href="/tags/{{ tag }}">{{ tag }}</a></li>
+    {% endfor %}
+  </ul>
   {%- assign date_format = site.date_format | default: "%B %d, %Y" -%}
   <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: date_format }}</time>
 </header>
