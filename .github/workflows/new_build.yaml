@@ -50,11 +50,8 @@ jobs:
       - name: Install gems
         working-directory: repo
         run: bundle install --jobs=4 --retry=3 
-      # Add a blank .nojekyll file to the repo to stop GitHub from generating a 404 for /.nojekyll
-      - name: Add a blank .nojekyll file to the repo to stop GitHub from generating a 404 for /.nojekyll
-        working-directory: repo
-        run: mkdir _site && touch _site/.nojekyll
-        
+
+
       # Build the site
       - name: Build the site
         working-directory: repo
@@ -62,10 +59,14 @@ jobs:
 
       # Create a new folder with the contents of the _site folder for the gh-pages branch
       - name: Create a new folder with the contents of the _site folder for the gh-pages branch
-        working-directory: ../gh-pages
+        working-directory: repo
         run: mkdir -p ../gh-pages
         
-      
+      # Add a blank .nojekyll file to the repo to stop GitHub from generating a 404 for /.nojekyll
+      - name: Add a blank .nojekyll file to the repo to stop GitHub Pages processing
+        working-directory: repo
+        run: ../gh-pages/_site/.nojekyll
+
       # Copy the contents of the _site folder to the gh-pages folder
       - name: Copy the contents of the _site folder to the gh-pages folder
         working-directory: ../gh-pages
