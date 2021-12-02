@@ -65,32 +65,32 @@ jobs:
       # Add a blank .nojekyll file to the repo to stop GitHub from generating a 404 for /.nojekyll
       - name: Add a blank .nojekyll file to the repo to stop GitHub Pages processing
         working-directory: repo
-        run: ../gh-pages/_site/.nojekyll
+        run: touch ../gh-pages/_site/.nojekyll
 
       # Copy the contents of the _site folder to the gh-pages folder
       - name: Copy the contents of the _site folder to the gh-pages folder
-        working-directory: ../gh-pages
+        working-directory: repo
         run: cp -r _site/* ../gh-pages
 
       # set the gh-pages folder to be a git repo
       - name: set the gh-pages folder to be a git repo
-        working-directory: ../gh-pages
+        working-directory: gh-pages
         run: git init
       
       # Add remore origin to gh-pages directory
       - name: Add remore origin to gh-pages directory
-        working-directory: ../gh-pages
+        working-directory: gh-pages
         run: git remote add origin ${{ github.server_url }}/${{ github.repository }}.git
       
 
        # Remove everything from the gh-pages branch
       - name: Remove everything from the gh-pages branch
-        working-directory: ../gh-pages
+        working-directory: gh-pages
         run: git branch -D gh-pages
 
       # Checkout the gh-pages branch
       - name: Checkout the gh-pages branch
-        working-directory: ../gh-pages
+        working-directory: gh-pages
         run: git checkout -b gh-pages
 
       # Change directory to the gh-pages folder
@@ -100,17 +100,17 @@ jobs:
       
       # Add all files to the gh-pages branch
       - name: Add all files to the gh-pages branch
-        working-directory: repo
+        working-directory: gh-pages
         run: git add .
 
       # Commit the changes
       - name: Commit the changes
-        working-directory: repo
+        working-directory: gh-pages
         run: git commit -m "Deployed to GitHub Pages"
 
       # Push the changes to the gh-pages branch
       - name: Push the changes to the gh-pages branch
-        working-directory: repo
+        working-directory: gh-pages
         run: git push origin gh-pages
 
         
