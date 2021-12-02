@@ -20,4 +20,5 @@
   </ul>
   {%- assign date_format = site.date_format | default: "%B %d, %Y" -%}
   <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: date_format }}</time>
+  <time datetime="{% last_modified_at %}">Last modified at {% last_modified_at %}</time>
 </header>

@@ -3,7 +3,7 @@
   <ul class="archive">
     {% for post in site.posts %}
     <li>
-      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+      <time datetime="{{ post.date | date_to_xmlschema }}">Published at {{ post.date | date: "%Y-%m-%d" }}, Last modified at {% last_modified_at %}</time>
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
       <!-- <span class="disqus-comment-count" data-disqus-identifier='{{ page.url | absolute_url }}'> -->
         <a href="{{ post.url | relative_url }}#disqus_thread">

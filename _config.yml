@@ -38,6 +38,12 @@ show_sidebar: true        # show a sidebar instead of the usual header
 # theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-last-modified-at
+
+last-modified-at:
+    date-format: '%d-%b-%y'
+
+lsi: true
 
 comments:
   disqus_shortname: "blog-xjqlc0gxzf"
