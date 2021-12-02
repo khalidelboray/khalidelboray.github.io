@@ -36,12 +36,18 @@ jobs:
       # Change directory to the repo directory
       - name: Change directory to the repo directory
         run: cd repo
+
+      # Print where we are
+      - name: Print where we are
+        run: pwd
+        
       # Install bundler
       - name: Install bundler
         run: gem install bundler
       
       # Install gems
       - name: Install gems
+        working-directory: repo
         run: bundle install --jobs=4 --retry=3 
 
       # Build the site
