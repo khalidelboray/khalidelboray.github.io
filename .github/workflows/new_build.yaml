@@ -11,8 +11,15 @@ jobs:
     steps:
       - name: Install libgsl-dev
         run: sudo apt-get install -y libgsl-dev
-      - name: GitHub Checkout
+      
+      - name: 📂 GitHub Checkout
         uses: actions/checkout@v1
+
+      - name: 💎 setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7 # can change this to 2.7 or whatever version you prefer
+      
       - name: Bundler Cache
         uses: actions/cache@v1
         with:
@@ -20,9 +27,27 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-gems-
-      - name: Build & Deploy to GitHub Pages
-        run: bundle exec jekyll build && bundle exec jekyll deploy
-      - name: GitHub Pages Push
+      # Install gems
+      - name: 📦 Install gems
+        run: bundle install --jobs=4 --retry=3 --deployment --path vendor/bundle --without development test
+      # Build jekyll
+      - name: 🏗 Build Jekyll
+        run: bundle exec jekyll build 
+      # Checkout to _site directory
+      - name: 📂 GitHub Checkout
+        uses: actions/checkout@v1
+        with:
+          path: _site
+      # Commit changes
+      - name: 💾 Commit changes
+        env:
+          GIT_AUTHOR_NAME: ${{ github.actor }}
+          GIT_AUTHOR_EMAIL: ${{ github.actor_email }}
+          GIT_COMMITTER_NAME: ${{ github.actor }}
+          GIT_COMMITTER_EMAIL: ${{ github.actor_email }}
+        run: git add -A && git commit -m "Deployed to ${{ github.ref }} by {{github.author}}"
+
+      - name: 💾 GitHub Pages Push
         uses: ad-m/github-push-action@master
         with:
           remote: origin
@@ -30,3 +55,16 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           message: "Push to GitHub Pages from ${{ env.GITHUB_ACTOR }}"
           force: true
+      # Go back to repository root directory
+      - name: 🏗 Go back to repository root directory
+        uses: actions/checkout@v1
+
+      # Delete _site directory and push changes to master branch
+      - name: 🗑️ Delete _site directory and push changes to master branch
+        run: rm -rf _site
+        env:
+          GIT_AUTHOR_NAME: ${{ github.actor }}
+          GIT_AUTHOR_EMAIL: ${{ github.actor_email }}
+          GIT_COMMITTER_NAME: ${{ github.actor }}
+          GIT_COMMITTER_EMAIL: ${{ github.actor_email }}
+      
