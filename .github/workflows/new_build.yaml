@@ -65,7 +65,7 @@ jobs:
       # Add remore origin to gh-pages directory
       - name: Add remore origin to gh-pages directory
         working-directory: ../gh-pages
-        run: git remote add origin ${{ github.repository.html_url }}
+        run: git remote add origin ${{ github.server_url }}/${{ github.repository }}.git
       
 
        # Remove everything from the gh-pages branch
