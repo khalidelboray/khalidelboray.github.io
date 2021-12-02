@@ -55,7 +55,7 @@ jobs:
       # Build the site
       - name: Build the site
         working-directory: repo
-        run: bundle exec jekyll build -V
+        run: bundle exec jekyll build -V && touch _site/.nojekyll
 
       # Create a new folder with the contents of the _site folder for the gh-pages branch
       - name: Create a new folder with the contents of the _site folder for the gh-pages branch
