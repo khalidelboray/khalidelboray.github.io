@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Install libgsl-dev
         run: sudo apt-get install -y libgsl-dev
-      
+
       # - name: 📂 GitHub Checkout
       #   uses: actions/checkout@v2
 
@@ -19,7 +19,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7 # can change this to 2.7 or whatever version you prefer
-      
+
       # - name: Bundler Cache
       #   uses: actions/cache@v2
       #   with:
@@ -27,7 +27,6 @@ jobs:
       #     key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
       #     restore-keys: |
       #       ${{ runner.os }}-gems-
-
 
       # Clone the repo to a directory called repo
       - name: Clone the repo
@@ -45,12 +44,11 @@ jobs:
       # Install bundler
       - name: Install bundler
         run: gem install bundler
-      
+
       # Install gems
       - name: Install gems
         working-directory: repo
-        run: bundle install --jobs=4 --retry=3 
-
+        run: bundle install --jobs=4 --retry=3
 
       # Build the site
       - name: Build the site
@@ -61,7 +59,7 @@ jobs:
       - name: Create a new folder with the contents of the _site folder for the gh-pages branch
         working-directory: repo
         run: mkdir ../gh-pages && ls
-        
+
       # Add a blank .nojekyll file to the repo to stop GitHub from generating a 404 for /.nojekyll
       - name: Add a blank .nojekyll file to the repo to stop GitHub Pages processing
         working-directory: repo
@@ -76,19 +74,17 @@ jobs:
       - name: set the gh-pages folder to be a git repo
         working-directory: gh-pages
         run: git init
-      
+
       # Add remore origin to gh-pages directory
       - name: Add remore origin to gh-pages directory
         working-directory: gh-pages
         run: git remote add origin ${{ github.server_url }}/${{ github.repository }}.git
-      
 
       # Checkout the gh-pages branch
       - name: Checkout the gh-pages branch
         working-directory: gh-pages
         run: git checkout -b gh-pages
 
-      
       # Add all files to the gh-pages branch
       - name: Add all files to the gh-pages branch
         working-directory: gh-pages
@@ -98,11 +94,10 @@ jobs:
       - name: Commit the changes
         working-directory: gh-pages
         run: |
-          git config --global user.email "{{ github.actor }}@users.noreply.github.com"
-          git config --global user.name "{{ github.actor }}"
-          git commit -m "Deployed to GitHub Pages by ${{github.actor}} on ${{ github.event.created_at }} with commit ${{github.event.commit}}"
-      
 
+          git config --global user.email "${ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+          git commit -m "Deployed to GitHub Pages by ${{github.actor}} on ${{ github.event.created_at }} with commit ${{github.event.commit}}"
 
       # Push the changes to the gh-pages branch
       - name: Push the changes to the gh-pages branch
