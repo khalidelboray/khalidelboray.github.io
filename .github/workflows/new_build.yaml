@@ -60,7 +60,7 @@ jobs:
       # Create a new folder with the contents of the _site folder for the gh-pages branch
       - name: Create a new folder with the contents of the _site folder for the gh-pages branch
         working-directory: repo
-        run: mkdir -p ../gh-pages
+        run: mkdir ../gh-pages && ls
         
       # Add a blank .nojekyll file to the repo to stop GitHub from generating a 404 for /.nojekyll
       - name: Add a blank .nojekyll file to the repo to stop GitHub Pages processing
@@ -70,7 +70,7 @@ jobs:
       # Copy the contents of the _site folder to the gh-pages folder
       - name: Copy the contents of the _site folder to the gh-pages folder
         working-directory: repo
-        run: cp -r _site/* ../gh-pages
+        run: cp -rf _site/* ../gh-pages
 
       # set the gh-pages folder to be a git repo
       - name: set the gh-pages folder to be a git repo
@@ -83,20 +83,11 @@ jobs:
         run: git remote add origin ${{ github.server_url }}/${{ github.repository }}.git
       
 
-       # Remove everything from the gh-pages branch
-      - name: Remove everything from the gh-pages branch
-        working-directory: gh-pages
-        run: git branch -D gh-pages
-
       # Checkout the gh-pages branch
       - name: Checkout the gh-pages branch
         working-directory: gh-pages
         run: git checkout -b gh-pages
 
-      # Change directory to the gh-pages folder
-      - name: Change directory to the gh-pages folder
-        working-directory: repo
-        run: cd ../gh-pages
       
       # Add all files to the gh-pages branch
       - name: Add all files to the gh-pages branch
@@ -106,85 +97,11 @@ jobs:
       # Commit the changes
       - name: Commit the changes
         working-directory: gh-pages
-        run: git commit -m "Deployed to GitHub Pages"
+        run: git commit -m "Deployed to GitHub Pages by ${{github.actor}} on ${{ github.event.created_at }} with commit ${{github.event.commit}}"
+      
+
 
       # Push the changes to the gh-pages branch
       - name: Push the changes to the gh-pages branch
         working-directory: gh-pages
         run: git push origin gh-pages
-
-        
-
-     
-        
-      # # Push the _site folder contents to gh-pages branch
-      # - name: Push the _site folder contents to gh-pages branch
-      #   run: git push origin gh-pages:gh-pages --force
-        
-      
-      # # View _site folder contents
-      # - name: 📂 View _site folder contents
-      #   run: ls -la _site
-      
-      #       # Commit changes
-      # # Create a new folder with the contents of _site directory
-      # - name: 📂 Create a new folder with the contents of _site directory
-      #   run: mkdir -p /tmp/jekyll-deploy
-      #   env:
-      #     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
-      
-      # # Copy the contents of _site to the new folder
-      # - name: 📂 Copy the contents of _site to the new folder
-      #   run: cp -r _site/* /tmp/jekyll-deploy
-
-      # # Cd into the new folder
-      # - name: 📂 Cd into the new folder
-      #   run: cd /tmp/jekyll-deploy && pwd && git remote -v
-
-      # # Add remote origin
-      # - name: 📂 Add remote origin
-      #   run: git remote add origin ${{ github.repository }}
-      #   env:
-      #     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
-
-      # # Add files to the staging area
-      # - name: 📂 Add files to the staging area
-      #   run: git add -A
-      #   env:
-      #     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
-      
-      # - name: 📂 Commit changes
-      #   run: git commit -m "Deployed with Jekyll"
-      #   env:
-      #     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
-      
-      # - name: 📂 Push changes
-      #   run: git push origin gh-pages
-      #   env:
-      #     GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no -i ${{ secrets.GIT_SSH_KEY }}"
-            
-      
-
-
-      # - name: 💾 GitHub Pages Push
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     remote: origin
-      #     branch: gh-pages
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     message: "Push to GitHub Pages from ${{ env.GITHUB_ACTOR }}"
-      #     force: true
-      #     directory: _site
-      # # Go back to repository root directory
-      # - name: 🏗 Go back to repository root directory
-      #   uses: actions/checkout@v1
-
-      # # Delete _site directory and push changes to master branch
-      # - name: 🗑️ Delete _site directory and push changes to master branch
-      #   run: rm -rf _site 
-      #   env:
-      #     GIT_AUTHOR_NAME: ${{ github.actor }}
-      #     GIT_AUTHOR_EMAIL: ${{ github.actor_email }}
-      #     GIT_COMMITTER_NAME: ${{ github.actor }}
-      #     GIT_COMMITTER_EMAIL: ${{ github.actor_email }}
-      
