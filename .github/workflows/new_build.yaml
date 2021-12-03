@@ -48,12 +48,14 @@ jobs:
       # Install gems
       - name: Install gems
         working-directory: repo
-        run: bundle install --jobs=4 --retry=3
+        run: |
+         bundle config set deployment true
+         bundle install --jobs=4 --retry=3
 
       # Build the site
       - name: Build the site
         working-directory: repo
-        run: bundle exec jekyll build -V && touch _site/.nojekyll
+        run: JEKYLL_ENV="production" bundle exec jekyll build -V && touch _site/.nojekyll
 
       # Create a new folder with the contents of the _site folder for the gh-pages branch
       - name: Create a new folder with the contents of the _site folder for the gh-pages branch
@@ -92,11 +94,11 @@ jobs:
 
       # Commit the changes
       - name: Commit the changes
+        uses: fregante/setup-git-user@v1
         working-directory: gh-pages
         run: |
-
-          git config --global user.email "${ github.actor }}@users.noreply.github.com"
-          git config --global user.name "${{ github.actor }}"
+          # git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          # git config --global user.name "${{ github.actor }}"
           git commit -m "Deployed to GitHub Pages by ${{github.actor}} on ${{ github.event.created_at }} with commit ${{github.event.commit}}"
 
       # Push the changes to the gh-pages branch
