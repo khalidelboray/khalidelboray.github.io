@@ -20,13 +20,13 @@ jobs:
         with:
           ruby-version: 2.7 # can change this to 2.7 or whatever version you prefer
       
-      - name: Bundler Cache
-        uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
+      # - name: Bundler Cache
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: vendor/bundle
+      #     key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-gems-
 
 
       # Clone the repo to a directory called repo
@@ -97,7 +97,10 @@ jobs:
       # Commit the changes
       - name: Commit the changes
         working-directory: gh-pages
-        run: git commit -m "Deployed to GitHub Pages by ${{github.actor}} on ${{ github.event.created_at }} with commit ${{github.event.commit}}"
+        run: |
+          git config --global user.email "{{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "{{ github.actor }}"
+          git commit -m "Deployed to GitHub Pages by ${{github.actor}} on ${{ github.event.created_at }} with commit ${{github.event.commit}}"
       
 
 
