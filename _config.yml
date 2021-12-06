@@ -34,18 +34,37 @@ site-tags: [ai,nnfs,raku,neural_networks]
 show_excerpts: true        # show article excerpts on the home page
 show_frame: true           # adds a gray frame to the site
 show_sidebar: true        # show a sidebar instead of the usual header
+
+collections:
+  feeds:
+    output: true
+  tags:
+    output: true
+
+exclude: [scripts]
 # Build settings
 # theme: minima
 plugins:
   - jekyll-feed
   - jekyll-last-modified-at
-  - jekyll-mentions
+  - jekyll-gist
+  - jekyll-seo-tag
+  - jekyll-analytics
 
-jekyll-mentions:
-  base_url: https://twitter.com
+jekyll_analytics:
+  GoogleAnalytics:          # Add, if you want to track with Google Analytics
+    id: UA-214291654-1
+
+
 
 last-modified-at:
     date-format: '%d-%b-%y'
+
+algolia:
+  application_id: '9152NGMYOG'
+  index_name: blog_index
+  api_key: 'e787437a3d45c65e0e0be25c3876bf1e'
+  
 
 lsi: true
 

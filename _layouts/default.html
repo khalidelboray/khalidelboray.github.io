@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
-<title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
+<head>
 <meta charset="{{ site.encoding }}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="{{ page.author | default: site.author | escape }}">
-<meta name="generator" content="Jekyll v{{ jekyll.version }}">
-<link rel="canonical" href="{{ page.url | absolute_url }}">
+
 {% if site.show_frame %}
 <link rel="stylesheet" href="{{ "/assets/css/frame.css" | relative_url }}">
 {% else %}
@@ -17,7 +16,24 @@
 <script defer src="{{ "/assets/katex/katex.min.js" | relative_url }}"></script>
 <script defer src="{{ "/assets/katex/contrib/auto-render.min.js" | relative_url }}" onload="renderMathInElement(document.body)"></script>
 {% endif %}
+{% seo %}
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js" integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">
+<style>
+  .ais-SearchBox-input {
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
+  .post-link .ais-Highlight {
+    color: #111;
+    font-style: normal;
+    text-decoration: underline;
+  }
 
+  </style>
+</head>
 {% if site.show_sidebar or site.sidebar %}{% include sidebar.html %}{% endif %}
 
 {% if site.navigation %}
@@ -35,8 +51,22 @@
 
 
 {% if page.layout == "post" %}
+
 <div id="disqus_thread"></div>
 <script>
+    // Send page view to google analytics
+    ga('send', 'pageview', {
+        'page': location.pathname,
+        'title': document.title
+    });
+    // Send all clicks to google analytics using normal listeners (not events)
+    document.addEventListener('click', function(e) {
+        ga('send', 'event', 'outbound', 'click', e.target.href);
+    });
+    // Send all form submissions to google analytics using normal listeners (not events)
+    document.addEventListener('submit', function(e) {
+        ga('send', 'event', 'outbound', 'submit', e.target.action);
+    });
     /**
     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
@@ -52,6 +82,38 @@
     s.setAttribute('data-timestamp', +new Date());
     (d.head || d.body).appendChild(s);
     })();
+    const client = algoliasearch('{{ site.algolia.application_id }}', '{{ site.algolia.api_key}} ');
+    const index = client.initIndex('{{ site.algolia.index_name }}');
+    const search = instantsearch({
+      searchFunction: function(helper) {
+        if (helper.state.query === '') {
+          return;
+        }
+
+        helper.search();
+      },
+      searchClient: client,
+      indexName: '{{ site.algolia.index_name }}',
+    });
+    search.addWidgets([
+      instantsearch.widgets.searchBox({
+          container: '#searchbox',
+          placeholder: 'Search the blog',
+          poweredBy: true 
+        }),
+      instantsearch.widgets.hits({
+        container: '#search-hits',
+        templates: {
+            empty: 'No results',
+            item: function(hit) {
+              return `
+                  <h2><a class="post-link" href="{{ site.baseurl }}${hit.url}">${hit.title}</a></h2>
+              `;
+            }
+          }
+      })
+    ]);
+    search.start();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 {% endif %}
