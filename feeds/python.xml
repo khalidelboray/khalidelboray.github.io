@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Khalid M. Elboray</title>
+ <link href="/atom.xml" rel="self"/>
+ <link href="https://khalidelboray.me/"/>
+ <updated>2022-02-22T10:35:21+02:00</updated>
+ <id>https://khalidelboray.me</id>
+ <author>
+   <name></name>
+   <email></email>
+ </author>
+
+ 
+   
+   <entry>
+     <title>PySide6 Part 1</title>
+     <link href="https://khalidelboray.me/2022/02/22/pyside6-1.html"/>
+     <updated>2022-02-22T00:00:00+02:00</updated>
+     <id>https://khalidelboray.me/2022/02/22/pyside6-1</id>
+     <content type="html">&lt;h1 id=&quot;about-the-series&quot;&gt;About the series&lt;/h1&gt;
+
+&lt;p&gt;In this series i will cover the basics of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PySide6&lt;/code&gt; and how to use it to create a simple GUI Application in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;pyside6&quot;&gt;PySide6&lt;/h1&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PySide6&lt;/code&gt; also known as Qt for Python is a cross-platform, open-source, GUI toolkit for Python.&lt;/p&gt;
+
+&lt;p&gt;PySide6 is the official binding for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Qt&lt;/code&gt; on Python and is now developed by the Qt Company itself.&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-started-with-pyside6&quot;&gt;Getting Started With PySide6&lt;/h2&gt;
+
+&lt;p&gt;In this tutorial we’ll learn how to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PySide6&lt;/code&gt; to create Desktop applications in Python.&lt;/p&gt;
+
+&lt;h3 id=&quot;creating-an-application&quot;&gt;Creating an application&lt;/h3&gt;
+
+&lt;p&gt;To create our first application, let’s create a python file called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app.py&lt;/code&gt; and save it anywhere accessible.&lt;/p&gt;
+
+&lt;p&gt;and to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PySide6&lt;/code&gt; we need to install it first.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;PySide6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;then we write a simple application in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;a simple PySide6 app should look like&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PySide6.QtWidgets&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QWidget&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# import os module to access command line arguments
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# We need one (and only one) QApplication instance per application.
+# Pass in sys.argv to allow command line arguments for your app.
+# If you know you won't use command line arguments QApplication([]) is fine.
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Create a Qt Widget instance, witch will be the main window of our application
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;window&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QWidget&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# And because the window is hidden by default, we need to show it
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Start the event loop.
+# You need to call this once your application is ready to receive events.
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Our application will run until quit() is called, which we do on the window being closed.
+# So we won't actually get here until we close the window.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we have a simple application, we can run it by executing the following command:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python3 app.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The application will run and you can see the window.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;walking-through-the-code&quot;&gt;Walking through the code&lt;/h3&gt;
+
+&lt;p&gt;Now let’s walk through the code and see how it works. so we understand what exactly is happening.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;First we import the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QApplication&lt;/code&gt; class from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PySide6.QtWidgets&lt;/code&gt; which is the main class for creating applications, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QWidget&lt;/code&gt; which is the base class for all user interface objects in Qt.&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PySide6.QtWidgets&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QWidget&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The main modules for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Qt&lt;/code&gt; are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QtWidgets&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QtGui&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QtCore&lt;/code&gt; and others.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Next we create an instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QApplication&lt;/code&gt; and pass in the command line arguments &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sys.argv&lt;/code&gt;, which is a list of strings containing the command line arguments passed to the script.&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Next we create an instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QWidget&lt;/code&gt; and set it as the main window of the application.&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;n&quot;&gt;window&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QWidget&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;In &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Qt&lt;/code&gt; all top level widgets are called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;windows&lt;/code&gt;. they don’t have a parent widget, and they are not children of any other widget.&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;Windows without a parent are invisible by default. So we must always call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;show()&lt;/code&gt; to make the window visible. If we don’t call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;show()&lt;/code&gt; the window will not appear on the screen.&lt;/p&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;show()&lt;/code&gt; is a method of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QWidget&lt;/code&gt; class that makes the widget visible.&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;The window holds our user-interface and is the main entry point for the application. Any application can have multiple windows, and each window can have multiple widgets.&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Finally we call the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exec()&lt;/code&gt; method of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;QApplication&lt;/code&gt; instance to enter the main event loop.&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exec()&lt;/code&gt; method is a blocking call that will return when the application has been closed.&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</content>
+   </entry>
+   
+ 
+   
+ 
+
+</feed>

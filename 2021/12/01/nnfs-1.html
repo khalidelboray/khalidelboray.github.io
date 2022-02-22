@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+
+<link rel="stylesheet" href="/assets/css/frame.css">
+
+<link rel="alternate" href="/feed.xml" type="application/atom+xml" title="Khalid M. Elboray">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>NNFS with Raku _ Part 1 | Khalid M. Elboray</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="NNFS with Raku _ Part 1" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="About the series" />
+<meta property="og:description" content="About the series" />
+<link rel="canonical" href="https://khalidelboray.me/2021/12/01/nnfs-1.html" />
+<meta property="og:url" content="https://khalidelboray.me/2021/12/01/nnfs-1.html" />
+<meta property="og:site_name" content="Khalid M. Elboray" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-12-01T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="NNFS with Raku _ Part 1" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://khalidelboray.me/2021/12/01/nnfs-1.html"},"url":"https://khalidelboray.me/2021/12/01/nnfs-1.html","headline":"NNFS with Raku _ Part 1","dateModified":"2022-02-22T10:35:19+02:00","datePublished":"2021-12-01T00:00:00+02:00","description":"About the series","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js" integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.min.js" integrity="sha512-9DkJEmXbL/Tdj8b1SxJ4H2p3RCAXKsu8RqbznEjhFYw0cFIWlII+PnGDU2FX3keyE9Ev6eFaDPyEAyAL2cEX0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
+  // MathJax configuration to preview html output and bigger font size
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    displayAlign: 'left',
+    displayIndent: '2em',
+    "HTML-CSS": {
+      availableFonts: ["TeX"],
+      preferredFont: "TeX",
+      webFont: "TeX",
+      imageFont: null,
+      showMathMenu: false,
+      showMathMenuMSIE: false,
+      styles: {
+        ".MathJax_Display": {
+          "font-size": "1.5em"
+        }
+      }
+    }
+  });
+  // MathJax.Hub.Config({
+  //   tex2jax: {
+  //     inlineMath: [['$','$'], ['\\(','\\)']],
+  //     processEscapes: true
+  //   },
+  //   displayAlign: 'left',
+  //   displayIndent: '2em',
+  //   "HTML-CSS": {
+  //     availableFonts: ["TeX"],
+  //     preferredFont: "TeX",
+  //     webFont: "TeX",
+  //     imageFont: null,
+  //     showMathMenu: false
+  //   }
+  // });
+  // MathJax.Hub.Config({
+  //     tex2jax: {
+  //         inlineMath: [["$", "$"], ["\\(", "\\)"]],
+  //         processEscapes: true
+  //     },
+  //     chtml: {
+  //           scale: 1.3
+  //       },
+  //       svg: {
+  //           scale: 1.3
+  //       }
+  // });
+</script>
+<style>
+  .ais-SearchBox-input {
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
+  .post-link .ais-Highlight {
+    color: #111;
+    font-style: normal;
+    text-decoration: underline;
+  }
+
+  </style>
+
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-214291654-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', false);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+<link rel="stylesheet" href="/assets/css/sidebar.css" media="screen and (min-width: 70em)">
+<aside style="display: none">
+  <nav><a aria-label="Home" href="/" >
+      <svg aria-hidden="true" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#home"></use></svg>
+      <span aria-hidden="true">Home</span>
+    </a><a aria-label="Archive" href="/archive" >
+      <svg aria-hidden="true" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#archive"></use></svg>
+      <span aria-hidden="true">Archive</span>
+    </a><a aria-label="Tags" href="/alltags" >
+      <svg aria-hidden="true" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#tag"></use></svg>
+      <span aria-hidden="true">Tags</span>
+    </a><a aria-label="Mail" href="mailto:elboraikhalid@gmail.com" >
+      <svg aria-hidden="true" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#envelope"></use></svg>
+      <span aria-hidden="true">Mail</span>
+    </a><a aria-label="Github" href="https://github.com/khalidelboray" >
+      <svg aria-hidden="true" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#github"></use></svg>
+      <span aria-hidden="true">Github</span>
+    </a><a aria-label="Subscribe" href="/feed.xml" >
+      <svg aria-hidden="true" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#rss"></use></svg>
+      <span aria-hidden="true">Subscribe</span>
+    </a></nav>
+  <!-- algolia search box and hits with content higligth -->
+  <div id="searchbox"></div>
+  <div id="search-hits"></div>
+  <div class="description">Some ideas and simple stuff in my free time.</div>
+</aside>
+
+
+
+
+<header>
+  <a href="/" class="title">Khalid M. Elboray</a>
+  <nav><a href="/" ><svg aria-label="Home" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#home"></use></svg></a><a href="/archive" ><svg aria-label="Archive" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#archive"></use></svg></a><a href="/alltags" ><svg aria-label="Tags" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#tag"></use></svg></a></nav>
+
+</header>
+
+<article>
+  <header>
+    <h1><a href="/2021/12/01/nnfs-1.html">NNFS with Raku _ Part 1</a></h1>
+    
+      <!-- <span class="disqus-comment-count" data-disqus-identifier='https://khalidelboray.me/2021/12/01/nnfs-1.html'> -->
+        <a href="https://khalidelboray.me/2021/12/01/nnfs-1.html#disqus_thread">
+          <span class="disqus-comment-count-inner"></span>
+        </a>  
+    
+    
+  <ul class="tags">
+    
+      <li><a href="/tags/raku">raku</a></li>
+    
+      <li><a href="/tags/ai">ai</a></li>
+    
+      <li><a href="/tags/nnfs">nnfs</a></li>
+    
+      <li><a href="/tags/AI">AI</a></li>
+    
+      <li><a href="/tags/neural_networks">neural_networks</a></li>
+    
+  </ul><time datetime="2021-12-01T00:00:00+02:00">December 01, 2021</time>
+  <time datetime="22-Feb-22">Last modified at 22-Feb-22</time>
+</header>
+
+  <h1 id="about-the-series">About the series</h1>
+
+<p>In this series of posts i will try to implement some or hopefully all of the code introduced in the book <a href="https://nnfs.io/">Neural Networks from Scratch in Python</a>.</p>
+
+<h1 id="neural-networks">Neural Networks</h1>
+
+<p>Neural Networks or Artificial Neural Networks reflect the behavior of the behavior of the human brain, allowing computer programs to solve common problems in the fields of AI, machine learning and deep learning.</p>
+
+<h2 id="what-are-neural-networks">What are neural networks</h2>
+
+<p><img src="https://serokell.io/files/zx/zxwju3ha.Machine-learning-vs-deep-learning.jpg" alt="Euler diagram: AI, ML, DL" style="zoom:50%;" /></p>
+
+<p>Artificial neural networks are inspired by the architecture of the human brain to perform tasks that conventional algorithms has little success with.</p>
+
+<p>ANNs are comprised of a node layers, containing an input layer, one or more hidden layers, and an output layer. Each node, or artificial neuron, connects to another and has an associated weight and threshold. If the output of any individual node is above the specified threshold value, the node is activated, sending data to the next layer of the network, Otherwise, no data is passed along the next layer of the network.</p>
+
+<ul>
+  <li>
+    <p>A neuron acts as an all-or-one switch, that outputs an action potential or no output.</p>
+  </li>
+  <li>
+    <p>The connection between each neuron is attributed a weight acting on the data flowing.</p>
+
+    <p><img src="https://1.cms.s81c.com/sites/default/files/2021-01-06/ICLH_Diagram_Batch_01_03-DeepNeuralNetwork-WHITEBG.png" alt="Visual diagram of an input layer, hidden layers, and an output layer of a feedforward neural network" style="zoom: 50%;" /></p>
+  </li>
+</ul>
+
+<h2 id="the-mathematics-of-a-neuron-the-perceptron">The Mathematics of a neuron (The Perceptron)</h2>
+
+<p>The perceptron is an algorithm for learning a binary classifier called a threshold function: a function that maps its input
+\(x\)
+(a real-valued vector) to an output value
+\(f(x)\)
+ (a single binary value):</p>
+
+\[f(x) = \begin{cases} 1 &amp; if \ \ w \cdot x + b &gt; 0 \\
+\\
+0 &amp; otherwise
+\end{cases}\]
+
+<p>where $w$ is a vector of real-valued weights and $w \cdot x$ is the dot product</p>
+
+\[w \cdot x = \sum_{i=1}^m \ w_ix_i\]
+
+<p>The value of
+\(f(x)\)
+(0 or 1) is used to classify
+\(x\)
+as either a positive or a negative instance.</p>
+
+<h1 id="coding-our-first-neuron">Coding Our First Neuron</h1>
+
+<p>At first we will be doing things from scratch with the fact that <a href="https://raku.org/">Raku</a> is quite capable of doing our math stuff.</p>
+
+<p>Most of our work will be about Matrices and Vectors and operations on them which again is easily done with Raku. But performance can be important for some tasks so we will later show a faster and more efficient alternative <a href="https://raku.land/cpan:FRITH/Math::Libgsl::Matrix">Libgsl</a>.</p>
+
+<h2 id="a-single-neuron">A single Neuron</h2>
+
+<p>As we discussed for each neuron there is some inputs. In most cases we initialize the parameters in neural networks, in a neural networks we will have weights initialized randomly, and biases set as zero to start with. The input will be either the training data or the outputs of neurons from a previous layer in the network. We will start with making up some values as input for our neuron.</p>
+
+<figure class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">@inputs</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">;</span></code></pre></figure>
+
+<p>Each input needs a weight associated with it. Inputs are the data passed into the model to get the desired outputs, while the weights are the parameters that will be tuned during the model training phase, biases will also change during training. The values of weights and biases are what get trained and they are what makes our model work (or not work). Again we will make up some weights for now. Let’s say that the first input, at index <code class="language-plaintext highlighter-rouge">0</code> , which is <code class="language-plaintext highlighter-rouge">1.2</code> has the weight of <code class="language-plaintext highlighter-rouge">3.1</code> , the second input has a weight of <code class="language-plaintext highlighter-rouge">2.1</code> and so on. Our input and weights lists should be:</p>
+
+<figure class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">@inputs</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">@weights</span> <span class="o">=</span> <span class="mf">3.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">8.7</span><span class="p">;</span></code></pre></figure>
+
+<p>Next, we need a bias, since we are working with a single neuron we only need one bias  and we will randomly set it to the value of <code class="language-plaintext highlighter-rouge">2</code>.</p>
+
+<figure class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">@inputs</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">@weights</span> <span class="o">=</span> <span class="mf">3.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">8.7</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$bias</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span></code></pre></figure>
+
+<p>The neuron will sum each input multiplied by input’s weight, then adds the bias, which can be calculated like:</p>
+
+<figure class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">$output</span> <span class="o">=</span> <span class="p">(</span><span class="nv">@inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="nv">*@weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nv">@inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span> <span class="nv">@weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+
+<span class="nv">@inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nv">@weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span><span class="o">+</span> <span class="nv">$bias</span><span class="p">;</span>
+
+<span class="nv">say</span>  <span class="nv">$output</span><span class="p">;</span> <span class="c1"># 34.7</span></code></pre></figure>
+
+<p>Our code up to this point:</p>
+
+<figure class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">@inputs</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">@weights</span> <span class="o">=</span> <span class="mf">3.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">8.7</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$bias</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$output</span> <span class="o">=</span> <span class="p">(</span><span class="nv">@inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="nv">*@weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nv">@inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span> <span class="nv">@weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+
+<span class="nv">@inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nv">@weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span><span class="o">+</span> <span class="nv">$bias</span><span class="p">;</span>
+
+<span class="nv">say</span>  <span class="nv">$output</span><span class="p">;</span> <span class="c1"># 34.7</span></code></pre></figure>
+
+<p>Which can be shortened (using the <a href="https://docs.raku.org/language/operators#___top">Reduction metaoperator</a> <code class="language-plaintext highlighter-rouge">[+]</code> and the <a href="https://docs.raku.org/language/operators#Hyper_operators">Hyper_operator</a> <code class="language-plaintext highlighter-rouge">&gt;&gt;*&lt;&lt;</code> to:</p>
+
+<figure class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">@inputs</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">@weights</span> <span class="o">=</span> <span class="mf">3.1</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">8.7</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$bias</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$output</span> <span class="o">=</span> <span class="p">(</span> <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="nv">@inputs</span> <span class="o">&gt;&gt;*&lt;&lt;</span> <span class="nv">@weights</span> <span class="p">)</span> <span class="o">+</span> <span class="nv">$bias</span><span class="p">;</span>
+
+<span class="nv">say</span> <span class="nv">$output</span><span class="p">;</span> <span class="c1"># 34.7</span></code></pre></figure>
+
+<p>That’s it for now, in the coming part we will implement a layer of neurons and re-implement our code using Libgsl.</p>
+
+  <h2>Enjoy Reading This Article?</h2>
+  <ul>
+
+  <li>
+  <p>Here are some more articles with similar tags:</p>
+  
+  
+  
+
+  <ul>
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+    
+
+    
+
+    
+    
+  </ul>
+</li>
+
+  
+  
+  <li>
+  <p>Here are some more articles with similar content:</p>
+  
+  <ul>
+  
+    
+      <li><a href="/2022/02/22/pyside6-1.html">PySide6 Part 1</a></li>
+    
+  
+  </ul>
+</li>
+  
+  </ul>
+
+
+</article>
+
+
+
+
+<div id="disqus_thread"></div>
+<script>
+  // Google Analytics
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  // set analytics id to your own
+  ga('create', 'UA-214291654-1', 'auto');
+    // Send page view to google analytics
+    ga('send', 'pageview', {
+        'page': location.pathname,
+        'title': document.title
+    });
+    // Send all clicks to google analytics using normal listeners (not events)
+    document.addEventListener('click', function(e) {
+        ga('send', 'event', 'outbound', 'click', e.target.href);
+    });
+    // Send all form submissions to google analytics using normal listeners (not events)
+    document.addEventListener('submit', function(e) {
+        ga('send', 'event', 'outbound', 'submit', e.target.action);
+    });
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    // /*
+    var disqus_config = function () {
+    this.page.url = 'https://khalidelboray.me/2021/12/01/nnfs-1.html';  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = 'https://khalidelboray.me/2021/12/01/nnfs-1.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    // */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://blog-xjqlc0gxzf.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    const client = algoliasearch('9152NGMYOG', 'e787437a3d45c65e0e0be25c3876bf1e ');
+    const index = client.initIndex('blog_index');
+    const search = instantsearch({
+      searchFunction: function(helper) {
+        if (helper.state.query === '') {
+          return;
+        }
+
+        helper.search();
+      },
+      searchClient: client,
+      indexName: 'blog_index',
+    });
+    search.addWidgets([
+      instantsearch.widgets.searchBox({
+          container: '#searchbox',
+          placeholder: 'Search the blog',
+          poweredBy: true 
+        }),
+      instantsearch.widgets.hits({
+        container: '#search-hits',
+        templates: {
+            empty: 'No results',
+            item: function(hit) {
+              return `
+                  <h2><a class="post-link" href="${hit.url}">${hit.title}</a></h2>
+              `;
+            }
+          }
+      })
+    ]);
+    search.start();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+<footer>
+  <div>Some ideas and simple stuff in my free time.</div>
+  <nav><a href="mailto:elboraikhalid@gmail.com" ><svg aria-label="Mail" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#envelope"></use></svg></a><a href="https://github.com/khalidelboray" ><svg aria-label="Github" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#github"></use></svg></a><a href="/feed.xml" ><svg aria-label="Subscribe" class="icon"><use xlink:href="/assets/fontawesome/icons.svg#rss"></use></svg></a></nav>
+
+</footer>
+
+<script id="dsq-count-scr" src="//blog-xjqlc0gxzf.disqus.com/count.js" async></script>
+
+
+</html>
